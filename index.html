@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise RAG System - AI Document Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .sample-questions {
+            list-style: none;
+        }
+
+        .sample-questions li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .sample-questions li:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .query-section {
+            margin-bottom: 20px;
+        }
+
+        .query-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .query-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .query-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .query-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .query-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .results-section {
+            margin-top: 20px;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #28a745;
+        }
+
+        .sources {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .source-tag {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Enterprise RAG System</h1>
+            <p>AI-Powered Document Assistant for Enterprise Knowledge</p>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>💡 Sample Questions</h2>
+                <p>Click on any question below to try it out:</p>
+                <ul class="sample-questions" id="sampleQuestions">
+                    <li onclick="askQuestion('What are the employee benefits offered by the company?')">
+                        What are the employee benefits offered by the company?
+                    </li>
+                    <li onclick="askQuestion('How does the performance management system work?')">
+                        How does the performance management system work?
+                    </li>
+                    <li onclick="askQuestion('What security measures should employees follow?')">
+                        What security measures should employees follow?
+                    </li>
+                    <li onclick="askQuestion('What is the remote work policy?')">
+                        What is the remote work policy?
+                    </li>
+                    <li onclick="askQuestion('What happens during employee termination?')">
+                        What happens during employee termination?
+                    </li>
+                    <li onclick="askQuestion('How much vacation time do employees get?')">
+                        How much vacation time do employees get?
+                    </li>
+                    <li onclick="askQuestion('What training and development opportunities are available?')">
+                        What training and development opportunities are available?
+                    </li>
+                    <li onclick="askQuestion('What is the company\'s code of conduct?')">
+                        What is the company's code of conduct?
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>🔍 Ask Your Own Question</h2>
+                <div class="query-section">
+                    <input
+                        type="text"
+                        id="queryInput"
+                        class="query-input"
+                        placeholder="Ask any question about company policies, HR, security, or benefits..."
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button id="queryBtn" class="query-btn" onclick="askQuestion()">
+                        🚀 Ask Question
+                    </button>
+                </div>
+
+                <div id="results" class="results-section">
+                    <!-- Results will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                Built with FastAPI, ChromaDB, and GPT4All |
+                <a href="https://github.com/yourusername/enterprise-rag" target="_blank">View Source Code</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+        const CLIENT_ID = 'client_001';
+
+        async function askQuestion(question = null) {
+            const queryInput = document.getElementById('queryInput');
+            const queryBtn = document.getElementById('queryBtn');
+            const resultsDiv = document.getElementById('results');
+
+            // Get question from parameter or input field
+            const query = question || queryInput.value.trim();
+
+            if (!query) {
+                alert('Please enter a question or select a sample question.');
+                return;
+            }
+
+            // Update UI
+            queryBtn.disabled = true;
+            queryBtn.innerHTML = '<span class="loading"></span>Generating Answer...';
+            queryInput.value = query;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/clients/${CLIENT_ID}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        top_k: 3
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayResult(data);
+                } else {
+                    displayError(`Error: ${data.detail || 'Unknown error occurred'}`);
+                }
+
+            } catch (error) {
+                displayError(`Network error: ${error.message}`);
+            } finally {
+                queryBtn.disabled = false;
+                queryBtn.innerHTML = '🚀 Ask Question';
+            }
+        }
+
+        function displayResult(data) {
+            const resultsDiv = document.getElementById('results');
+
+            const resultHTML = `
+                <div class="result-card">
+                    <h3>🤖 AI Answer</h3>
+                    <p>${data.answer}</p>
+
+                    <div class="sources">
+                        <strong>📚 Sources:</strong>
+                        ${data.sources.map(source => `<span class="source-tag">${source}</span>`).join('')}
+                    </div>
+
+                    <div style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                        <span>⏱️ Generated in ${data.generation_time_seconds}s</span> |
+                        <span>📄 Used ${data.context_chunks_used} chunks</span>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = resultHTML;
+        }
+
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+
+            const errorHTML = `
+                <div class="error">
+                    <strong>❌ Error</strong><br>
+                    ${message}
+                </div>
+            `;
+
+            resultsDiv.innerHTML = errorHTML;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                askQuestion();
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Enterprise RAG Frontend loaded!');
+        });
+    </script>
+</body>
+</html>

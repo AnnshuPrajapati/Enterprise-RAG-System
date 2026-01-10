@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+numpy
+faiss-cpu
+sentence-transformers
+PyPDF2
+python-docx
+gpt4all
+chromadb
+transformers
+torch
+requests
+python-multipart
