@@ -44,7 +44,7 @@ docker build -t enterprise-rag .
 docker run -p 8000:8000 enterprise-rag
 ```
 
-## 📋 Usage
+##  Usage
 
 ### 1. Document Ingestion
 
@@ -73,7 +73,7 @@ curl -X POST "http://127.0.0.1:8000/clients/client_001/query" \
   -d '{"query": "What is the vacation policy?", "top_k": 3}'
 ```
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -97,7 +97,7 @@ curl -X POST "http://127.0.0.1:8000/clients/client_001/query" \
                        └─────────────────┘
 ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 enterprise-rag/
@@ -166,7 +166,7 @@ The app works on any platform that supports Python 3.12:
 - AWS Elastic Beanstalk
 - Google Cloud Run
 
-## 🧪 Sample Documents
+##  Sample Documents
 
 The system comes with comprehensive sample documents:
 - **HR Policy** (PDF) - Employment policies and procedures
@@ -176,7 +176,7 @@ The system comes with comprehensive sample documents:
 - **Code of Conduct** (PDF) - Ethical standards and behavior
 - **Holiday Policy** (PDF) - Time-off and leave policies
 
-## 🧪 Testing
+##  Testing
 
 Run comprehensive tests:
 
@@ -188,7 +188,7 @@ python3 ingest_bulk_docs.py
 python3 test_queries.py
 ```
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -196,11 +196,11 @@ python3 test_queries.py
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+##  License
 
 MIT License - feel free to use this project for your own purposes!
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **FastAPI** - Modern Python web framework
 - **ChromaDB** - Vector database for AI applications
@@ -210,6 +210,3 @@ MIT License - feel free to use this project for your own purposes!
 
 ---
 
-**Built with ❤️ for the AI community**
-
-*No API keys required • 100% local • Production-ready*
