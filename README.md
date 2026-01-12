@@ -2,8 +2,6 @@
 
 An AI-powered document assistant that provides intelligent answers to questions about enterprise policies, HR guidelines, security protocols, and company procedures using local Large Language Models (no external API costs).
 
-![Demo](https://via.placeholder.com/800x400/667eea/ffffff?text=Enterprise+RAG+Demo)
-
 ## 🌟 Features
 
 - **📄 Multi-format Support**: Processes PDF and DOCX documents
